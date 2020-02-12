@@ -15,5 +15,7 @@ private:
 
 	friend class pila;
 
+	
+
 };
 

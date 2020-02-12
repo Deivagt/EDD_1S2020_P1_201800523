@@ -1,22 +1,26 @@
 
 #include <iostream>
+
 #include "listaD.h"
+#include "pila.h"
+#include "nodoNoRev.h"
+
 using namespace std;
 
 
 
 int main()
 {
-    listaD* hola = new listaD;
-    string s = "hola";
-    hola->insertarPrimero(' ');
+    pila* hola = new pila();
    
-    hola->insertarPrimero('h');
-    hola->insertarPrimero('o');
-    hola->insertarPrimero('l');
-    hola->insertarPrimero('e');
-    hola->imprimir();
-  
-    hola->buscar(s);
+        hola->push("Hola", "Adios",false, "kien", 5);
+        hola->push("Si", "No", false, "kien", 5);
+        
+        hola->imprimir();
+        nodoNoRev* aux = hola->pop();
+ 
+        hola->imprimir();
+        hola->rePush(aux);
+        hola->imprimir();
 }
 

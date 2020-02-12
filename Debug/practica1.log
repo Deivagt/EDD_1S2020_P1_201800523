@@ -1,4 +1,6 @@
-﻿  listaD.cpp
-  nodo.cpp
+﻿  pila.cpp
+  practica1.cpp
   Generando código...
+D:\Repositorios\EDD_1S2020_P1_201800523\pila.cpp(42): warning C4715: 'pila::pop': no todas las rutas de acceso de control devuelven un valor
+D:\Repositorios\EDD_1S2020_P1_201800523\pila.cpp(51): warning C4715: 'pila::peek': no todas las rutas de acceso de control devuelven un valor
   practica1.vcxproj -> D:\Repositorios\EDD_1S2020_P1_201800523\Debug\practica1.exe

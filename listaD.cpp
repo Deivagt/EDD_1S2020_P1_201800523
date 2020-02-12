@@ -68,12 +68,10 @@ void listaD::buscar(string s) {
     int tB = 0;
 
     strcpy_s(buffer, s.c_str());
-
-
+    
     nodo* aux = new nodo();
     nodo* temp = new nodo();
     aux = ultimo->anterior;
-
     bool match = false;
 
     if (aux->anterior == NULL) {
@@ -81,22 +79,25 @@ void listaD::buscar(string s) {
     }
     else {
 
-        while (aux != primero) {
-            if (aux->letra == buffer[tB]) {
-
-                if (tB == 0) {
-                    temp = aux;
-                }
-
-                match = true;
-
-                tB++;
-            }
-
-
-
+        while (aux != primero && match != true) {
+            if (aux->letra == buffer[0]) {
+                temp = aux;
+                for (int i = 0; i < s.size(); i++) {
+                    if (aux->letra == buffer[tB]) {
+                        match = true;
+                        tB++;
+                    }
+                    else {
+                        match = false;
+                        break;
+                    }
+                    aux = aux->anterior;
+               }                  
+                if (match != true) {
+                    tB = 0;
+               }               
+            }            
             aux = aux->anterior;
-
         }
         if (match == true) {
             cout << "La primera letra es: " << temp->letra << endl;

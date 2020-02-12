@@ -10,7 +10,7 @@ private:
     int id;
     nodo* anterior;
     nodo* siguiente;
-
+     
     friend class listaD;
 };
 

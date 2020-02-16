@@ -4,13 +4,13 @@ using namespace std;
 
 class nodo
 {
-private:
+public:
 
     char letra;
     int id;
     nodo* anterior;
     nodo* siguiente;
-     
+ 
     friend class listaD;
 };
 

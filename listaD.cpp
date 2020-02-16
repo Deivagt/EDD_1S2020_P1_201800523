@@ -2,6 +2,7 @@
 
 
 listaD::listaD() {
+    indice = 0;
     primero = new nodo();
     ultimo = new nodo();
     primero->siguiente = ultimo;
@@ -13,18 +14,36 @@ listaD::listaD() {
 
 
 }
+void listaD::insertar(char c,nodo* temp) {
+    nodo* aux = new nodo();
+    aux->letra = c;
+    aux->id = indice;
+    indice++;
 
-void listaD::insertarPrimero(char c)
+    aux->siguiente = temp->siguiente;
+    aux->anterior = temp;
+
+    
+    temp->siguiente->anterior = aux;
+    temp->siguiente = aux;
+}
+
+
+void listaD::insertarUltimo(char c)
 {
     nodo* aux = new nodo();
     aux->letra = c;
-    aux->anterior = primero;
-    aux->siguiente = primero->siguiente;
+    aux->id = indice;
+    indice++;
+    aux->siguiente = ultimo;
+    aux->anterior = ultimo->anterior;
+    
 
-    primero->siguiente->anterior = aux;
-    primero->siguiente = aux;
+    ultimo->anterior->siguiente = aux;
+    ultimo->anterior = aux;
 
 }
+
 void listaD::eliminarUltimo() {
     nodo* aux = new nodo();
 
@@ -40,24 +59,49 @@ void listaD::eliminarUltimo() {
 
     }
     else {
-        cout << "La lista esta vacia" << endl;
+   
     }
 
 
 
 }
 
+void listaD::eliminar(int id) {
+    nodo* aux = new nodo();
+    
+    aux = primero;
+    while (aux->siguiente != ultimo) {
+        aux = aux->siguiente;
+   
+        if (aux->id == id) {
+            aux->anterior->siguiente = aux->siguiente;
+            aux->siguiente->anterior = aux->anterior;
+            aux->siguiente = NULL;
+            aux->anterior = NULL;
+            
+            break;
+        }
+        
+    }
+}
+
+nodo* listaD::getPrimero() {
+    return primero;
+}
+nodo* listaD::getUltimo() {
+    return ultimo;
+}
 void listaD::imprimir() {
     nodo* aux = new nodo();
-    aux = ultimo->anterior;
-    if (aux->anterior == NULL) {
-        cout << "La lista esta vacia" << endl;
+    aux = primero->siguiente;
+    if (aux->siguiente == NULL) {
+  
     }
     else {
 
-        while (aux != primero) {
+        while (aux != ultimo) {
             cout << aux->letra;
-            aux = aux->anterior;
+            aux = aux->siguiente;
         }
     }
 }
@@ -107,4 +151,123 @@ void listaD::buscar(string s) {
         }
     }
 
+}
+
+
+int listaD::reemplazar(string b, string r) {
+    char buffer[100];
+    strcpy_s(buffer, b.c_str());
+    char buffer1[100];
+    strcpy_s(buffer1, r.c_str());
+    int tB = 0;
+    int cReemplazos = 0;
+    bool match = false;
+    nodo* aux = new nodo();
+    nodo* temp = new nodo();
+    aux = primero;
+    if (aux->siguiente == ultimo) {
+    }
+    else {
+        while (aux != ultimo ) {
+            aux = aux->siguiente;
+            if (aux->letra == buffer[0]&& (aux->anterior->letra == 32|| aux->anterior->letra == NULL)) {
+                tB = 0;
+                temp = aux;
+                for (int i = 0; i < b.size(); i++) {
+                    if (temp->letra == buffer[tB]) {
+                        temp = temp->siguiente;
+                        match = true;
+                        tB++;
+                    }
+                    else if(buffer[tB] == 32) {
+                    }
+                    else {
+                        match = false;
+                    }
+                }
+                if (match == true && (temp->letra == 32|| temp->letra == NULL)) {
+                    aux = aux->anterior;
+                    temp = temp->anterior;
+                    do {
+                        temp = temp->anterior;
+                        this->eliminar(temp->siguiente->id);
+                    }while(temp != aux);
+                    for (int k = 0; k <= r.size()-1; k++) {  
+                        this->insertar(buffer1[k], temp);
+                        temp = temp->siguiente;
+                    }
+                    cReemplazos++;
+                }
+            }
+        }
+    }
+    return cReemplazos;
+}
+
+void listaD::reemplazar(string b, string r, int cantidad) {
+    char buffer[100];
+    strcpy_s(buffer, b.c_str());
+    char buffer1[100];
+    strcpy_s(buffer1, r.c_str());
+    int tB = 0;
+    int cReemplazos = 0;
+    bool match = false;
+    nodo* aux = new nodo();
+    nodo* temp = new nodo();
+    aux = primero;
+    if (aux->siguiente == ultimo) {
+    }
+    else {
+        while (aux != ultimo && cantidad > 0) {
+            aux = aux->siguiente;
+            if (aux->letra == buffer[0] && (aux->anterior->letra == 32 || aux->anterior->letra == NULL)) {
+                tB = 0;
+                temp = aux;
+                for (int i = 0; i < b.size(); i++) {
+                    if (temp->letra == buffer[tB]) {
+                        temp = temp->siguiente;
+                        match = true;
+                        tB++;
+                    }
+                    else if (buffer[tB] == 32) {
+                    }
+                    else {
+                        match = false;
+                    }
+                }
+                if (match == true && (temp->letra == 32 || temp->letra == NULL)) {
+                    aux = aux->anterior;
+                    temp = temp->anterior;
+                    do {
+                        temp = temp->anterior;
+                        this->eliminar(temp->siguiente->id);
+                    } while (temp != aux);
+                    for (int k = 0; k <= r.size() - 1; k++) {
+                        this->insertar(buffer1[k], temp);
+                        temp = temp->siguiente;
+                    }
+                    cReemplazos++;
+                    cantidad--;
+                }
+            }
+        }
+    }
+    
+}
+
+listaD* listaD::duplicar() {
+    nodo* temp = new nodo();
+    listaD* t = new listaD();
+    temp = primero;
+
+    while (temp != ultimo) {
+        temp = temp->siguiente;
+        if (temp != ultimo) {
+            t->insertarUltimo(temp->letra);
+            
+        }
+        
+    }
+    
+    return t;
 }

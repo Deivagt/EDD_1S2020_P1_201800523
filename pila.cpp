@@ -36,7 +36,7 @@ nodoNoRev* pila::pop() {
 		return aux;
 	}
 	else {
-		cout << "la pila esta vacia"<< endl;
+		
 	}
 	
 }
@@ -56,7 +56,7 @@ void pila::imprimir() {
 
 	if (cabeza->siguiente != NULL) {
 		while (aux->siguiente != NULL) {
-			cout << aux->palabraBuscada << aux->palabraReemplazada << "\n";
+			cout << aux->palabra << aux->posicion << "\n";
 			aux = aux->siguiente;
 		}
 	}

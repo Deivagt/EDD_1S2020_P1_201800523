@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -90,10 +90,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(ProjectDir)lib\pdcurses.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -147,15 +149,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="listaCircular.cpp" />
     <ClCompile Include="listaD.cpp" />
+    <ClCompile Include="listaSimple.cpp" />
     <ClCompile Include="nodo.cpp" />
+    <ClCompile Include="nodoLC.cpp" />
     <ClCompile Include="nodoNoRev.cpp" />
     <ClCompile Include="pila.cpp" />
     <ClCompile Include="practica1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="listaCircular.h" />
     <ClInclude Include="listaD.h" />
+    <ClInclude Include="listaSimple.h" />
     <ClInclude Include="nodo.h" />
+    <ClInclude Include="nodoLC.h" />
     <ClInclude Include="nodoNoRev.h" />
     <ClInclude Include="pila.h" />
   </ItemGroup>

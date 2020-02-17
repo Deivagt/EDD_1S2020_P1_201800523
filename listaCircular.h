@@ -15,7 +15,10 @@ private:
 
 public:
     listaCircular();
-    void insertarUltimo(nodoLC* n) ;
+    void insertarPrimero(nodoLC* n) ;
     void imprimir();
+    nodoLC* getPrimero();
+    nodoLC* getUltimo();
+    nodoLC* buscar(int id);
 };
 

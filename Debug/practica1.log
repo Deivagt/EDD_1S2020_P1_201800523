@@ -1,7 +1,3 @@
-﻿  listaD.cpp
-D:\Repositorios\EDD_1S2020_P1_201800523\listaD.cpp(129,35): warning C4018: '<': no coinciden signed/unsigned
-D:\Repositorios\EDD_1S2020_P1_201800523\listaD.cpp(176,35): warning C4018: '<': no coinciden signed/unsigned
-D:\Repositorios\EDD_1S2020_P1_201800523\listaD.cpp(195,39): warning C4018: '<=': no coinciden signed/unsigned
-D:\Repositorios\EDD_1S2020_P1_201800523\listaD.cpp(226,35): warning C4018: '<': no coinciden signed/unsigned
-D:\Repositorios\EDD_1S2020_P1_201800523\listaD.cpp(245,39): warning C4018: '<=': no coinciden signed/unsigned
+﻿  practica1.cpp
+D:\Repositorios\EDD_1S2020_P1_201800523\practica1.cpp(49,15): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
   practica1.vcxproj -> D:\Repositorios\EDD_1S2020_P1_201800523\Debug\practica1.exe

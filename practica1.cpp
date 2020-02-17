@@ -5,7 +5,8 @@
 #include "pila.h"
 #include "listaSimple.h"
 #include "listaCircular.h"
-
+#include <iostream>
+#include <fstream>
 
 
 
@@ -28,6 +29,9 @@ void refrescar();
 void deshacer();
 void rehacer();
 void buscarReemplazar();
+void guardar();
+int repitoxd(int x, int y);
+
 
 int main()
 {
@@ -35,7 +39,7 @@ int main()
     cambios1 = new pila();
     cambios2 = new pila();
     repPalOrd = new listaSimple();
-
+    archiRec = new listaCircular();
 
     initscr();
     refresh();
@@ -93,7 +97,7 @@ void menuPrincipal() {
     mvwprintw(win, 10, 5, "MENU");
     mvwprintw(win, 11, 5, "1. Crear Archivo");
     mvwprintw(win, 12, 5, "2. Abrir Archivo");
-    mvwprintw(win, 13, 5, "3. Abrir Archivos Recientes");
+    mvwprintw(win, 13, 5, "3. Archivos Recientes");
     mvwprintw(win, 14, 5, "4. Salir");
 
     wrefresh(win);
@@ -108,6 +112,7 @@ void menuPrincipal() {
             break;
         }
         else if (c == 50) {
+            
 
             abrirArchivo();
             break;
@@ -140,7 +145,7 @@ void editor() {
 
         int c = wgetch(win);
         
-     
+        wprintw(win, "%i", c);
          /*if (c == KEY_LEFT) {
              if (py > 0) {
                  py = py - 1;
@@ -188,7 +193,12 @@ void editor() {
 
          }
         else */
-        
+        if (c == 27) {
+            menuPrincipal();
+            break;
+
+        }
+        else
         if (c == 8) {
             nodoNoRev* t = new nodoNoRev();
             t->palabra = listaCaracteres->getUltimo()->anterior->letra;
@@ -238,8 +248,10 @@ void editor() {
         }
         else if (c == 19) {/*CTRL+S*/
 
-           
-
+            guardar();
+            refrescar();
+            menuPrincipal();
+            break;
         }
         else {
              listaCaracteres->insertarUltimo((char)c);
@@ -262,6 +274,7 @@ void editor() {
         }
     }
 }
+
 void refrescar() {
     wclear(win);
 
@@ -335,11 +348,6 @@ void rehacer() {
         strcpy_s(buffer, t->palabra.c_str());
         listaCaracteres->insertarUltimo(buffer[0]);
         cambios1->rePush(t);
-
-
-
-
-        
         break;
     case 1:
         listaCaracteres->eliminarUltimo();
@@ -356,6 +364,7 @@ void rehacer() {
         break;
     }
 }
+
 void buscarReemplazar() {
     string entrada = "";
     wclear(win);
@@ -434,30 +443,181 @@ void buscarReemplazar() {
 
     refrescar();
 }
+
 void abrirArchivo() {
-  
+    string entrada = "";
+    string cuerpo = "";
+    string salida = "";
     wclear(win);
     
-    mvwprintw(win, 2, 5, "Menu Abrir Archivo");
+   
+   
+    mvwprintw(win, 23, 15, "Abrir Archivo [RUTA]: ");
     wrefresh(win);
-    
+    wmove(win, 15, 37);
  
 
     while (true) {
-       
-        char c = wgetch(win);
-        wprintw(win, "%d", c);
 
-        if (c == 52) {
+        int c = wgetch(win);
+        if (c == 27) {
             menuPrincipal();
             break;
-          
+
+        }else 
+        if (c == 13) {
+            ifstream file;
+            file.open(entrada);
+            
+            while (!file.eof()) {
+                file >> cuerpo;
+                salida = salida + cuerpo;
+
+            }
+            file.close();
+            cout << salida;
+            /*D:\salida\a.txt*/
+
+        }
+        else {
+            entrada = entrada + (char)c;
         }
     }
 
 }
 
+int repitoxd(int x, int y) {
+    int tx = 4;
+    int ty = 7;
+    int id = 4;
+    nodoLC* aux = new nodoLC();
+    aux = archiRec->getPrimero();
+    wclear(win);
+    mvwprintw(win, x, y, "*");
+   
+
+    while (aux->siguiente != archiRec->getUltimo()) {
+        aux = aux->siguiente;
+        aux->id = id;
+        string auxi = "";
+        char buffer[100];
+        auxi = auxi + aux->nombreArchivo + "         " + aux->rutaArchivo;
+        strcpy_s(buffer, auxi.c_str());
+        mvwprintw(win, id, ty, buffer);
+        id++;
+    }
+
+    mvwprintw(win, 2, 5, "ARCHIVOS RECIENTES");
+    mvwprintw(win, 23, 5, "X. Generar reporte de archivos recientes");
+    wrefresh(win);
+    
+    return id;
+}
+
 void abrirRecientes() {
+    int x = 4;
+    int y = 5;
+  
+   
+   int id =  repitoxd(x, y);
+
+
+    while (true) {
+       
+
+        int c = wgetch(win);
+
+    
+        if (c == 27) {
+            menuPrincipal();
+            break;
+
+        }
+        else if (c == KEY_UP) {
+
+            if (x > 4) {
+                x = x - 1;
+
+               
+            }
+             repitoxd(x, y);
+        }
+        else if (c == KEY_DOWN) {
+            if (x <= id-2) {
+                x = x + 1;
+              
+                
+            }
+         
+           repitoxd(x, y);
+
+        }
+        else if (c == 13) {
+            nodoLC* t = new nodoLC();
+            if (archiRec->getPrimero()->siguiente != archiRec->getPrimero()) {
+                t = archiRec->buscar(x);
+                cout << t->nombreArchivo;
+            }
+            
+
+
+        }
+     
+    }
+}
+
+void guardar() {
+    string entrada = "";
+    string cuerpo = "";
+    wclear(win);
+
+    aux = listaCaracteres->getPrimero();
+
+    if (aux->siguiente == listaCaracteres->getUltimo()) {
+    }
+    else {
+        int xt = 0;
+        int yt = 0;
+
+        while (aux->siguiente != listaCaracteres->getUltimo()) {
+            aux = aux->siguiente;
+            mvwprintw(win, xt, yt, "%c%", aux->letra);
+            yt = yt + 1;
+            if (yt == 113) {
+                yt = 0;
+                xt = xt + 1;
+            }
+            px = xt;
+            py = yt;
+        }
+    }
+    mvwprintw(win, 20, 15, "Guardar: ");
+    mvwprintw(win, 23, 15, "CTRL+w (BUSCAR Y REEMPLAZAR)             CTRL+c(REPORTES)            CTRL+s(GUARDAR)");
+    wrefresh(win);
+
+    wmove(win, 20, 25);
+
+    while (true) {
+
+        int c = wgetch(win);
+
+        if (c == 13) {
+            ofstream file;
+            file.open("D:/salida/" + entrada + ".txt");
+            cuerpo = listaCaracteres->texto();
+
+            file << cuerpo;
+            file.close();
+
+            break;
+
+        }
+        else {
+            entrada = entrada + (char)c;
+        }
+    }
+
+   
 }
 
 

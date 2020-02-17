@@ -25,4 +25,5 @@ public:
     void insertar(char c, nodo* temp);
     void imprimir();
     listaD* duplicar();
+    string texto();
 };

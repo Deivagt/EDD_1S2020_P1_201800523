@@ -264,10 +264,20 @@ listaD* listaD::duplicar() {
         temp = temp->siguiente;
         if (temp != ultimo) {
             t->insertarUltimo(temp->letra);
-            
         }
-        
     }
     
     return t;
+}
+
+string listaD::texto() {
+    nodo* aux = new nodo();
+    string salida;
+    aux = primero;
+    while (aux != ultimo) {
+        aux = aux->siguiente;
+        salida = salida + aux->letra;
+
+    }
+    return salida;
 }

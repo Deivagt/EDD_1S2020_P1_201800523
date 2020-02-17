@@ -4,9 +4,10 @@ using namespace std;
 
 class nodoLC
 {
-private:
+public:
 	string nombreArchivo;
 	string rutaArchivo;
+	int id;
 
 	nodoLC* siguiente;
 };

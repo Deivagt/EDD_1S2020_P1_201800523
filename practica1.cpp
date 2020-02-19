@@ -7,6 +7,7 @@
 #include "listaCircular.h"
 #include <iostream>
 #include <fstream>
+#include<string>
 
 
 
@@ -31,7 +32,15 @@ void rehacer();
 void buscarReemplazar();
 void guardar();
 int repitoxd(int x, int y);
-
+string graficarLd();
+void generarGrafoLd(string e);
+string graficarPila();
+void generarGrafoPila(string e);
+string graficarPila2();
+void generarGrafoPila2(string e);
+string graficarRecientes();
+void generarGrafoRecientes(string e);
+void graficasion();
 
 int main()
 {
@@ -73,12 +82,6 @@ int main()
    
     endwin();
 
-
-  
- 
-
-
-
     return 0;
 }
 
@@ -105,7 +108,7 @@ void menuPrincipal() {
     while (true) {
         int c = wgetch(win);
         
-
+        /*wprintw(win, "%i", c);*/
         if (c == 49) {
             
             editor();
@@ -123,7 +126,7 @@ void menuPrincipal() {
             break;
         }
         else if (c == 52) {
-
+            exit(0);
             break;
         }
     }
@@ -134,18 +137,17 @@ void editor() {
      px = 0;
      py = 0;
     
-    
     wclear(win);
     
     mvwprintw(win, 23, 15, "CTRL+w (BUSCAR Y REEMPLAZAR)             CTRL+c(REPORTES)            CTRL+s(GUARDAR)");
     wrefresh(win);
     wmove(win, px, py);
-
+    refrescar();
     while (true) {
 
         int c = wgetch(win);
-        
-        wprintw(win, "%i", c);
+       
+       
          /*if (c == KEY_LEFT) {
              if (py > 0) {
                  py = py - 1;
@@ -193,7 +195,7 @@ void editor() {
 
          }
         else */
-        if (c == 27) {
+        if (c == 24) {
             menuPrincipal();
             break;
 
@@ -224,7 +226,7 @@ void editor() {
 
          }
         else if (c == 23) {/*CTRL+W*/
-
+          
             buscarReemplazar();
            
          
@@ -241,9 +243,12 @@ void editor() {
             refrescar();
 
         }
-        else if (c == 3) {/*CTRL+C*/
+        else if (c == 17) {/*CTRL+V*/
    
-          
+            graficasion();
+            refrescar();
+            
+
 
         }
         else if (c == 19) {/*CTRL+S*/
@@ -267,6 +272,14 @@ void editor() {
 
                  py = 0;
                  px = px + 1;
+             }
+
+             if (cambios2->cabeza->siguiente != NULL) {
+              
+                 while (cambios2->cabeza->siguiente != NULL) {
+                     cambios2->pop();
+                    
+                 }
              }
            
              refrescar();
@@ -366,6 +379,7 @@ void rehacer() {
 }
 
 void buscarReemplazar() {
+
     string entrada = "";
     wclear(win);
 
@@ -398,7 +412,7 @@ void buscarReemplazar() {
     while (true) {
 
         int c = wgetch(win);
-       
+      /*  wprintw(win, "%i", c);*/
         if (c == 13) {
             string b;
             string r;
@@ -431,10 +445,22 @@ void buscarReemplazar() {
                 
             
             
-           
+            if (t->cR != 0) {
+                if (cambios2->cabeza->siguiente != NULL) {
+
+                    while (cambios2->cabeza->siguiente != NULL) {
+                        cambios2->pop();
+
+                    }
+                }
+           }
             cambios1->rePush(t);
             break;
 
+        }
+        else if (c == 24) {
+
+            break;
         }
         else {
             entrada = entrada + (char)c;
@@ -454,29 +480,67 @@ void abrirArchivo() {
    
     mvwprintw(win, 23, 15, "Abrir Archivo [RUTA]: ");
     wrefresh(win);
-    wmove(win, 15, 37);
+    wmove(win, 23, 37);
  
 
     while (true) {
 
         int c = wgetch(win);
-        if (c == 27) {
+        if (c == 24) {
             menuPrincipal();
             break;
 
-        }else 
-        if (c == 13) {
-            ifstream file;
-            file.open(entrada);
-            
-            while (!file.eof()) {
-                file >> cuerpo;
-                salida = salida + cuerpo;
+        }
+        else
+            if (c == 13) {
+                ifstream file;
+                file.open(entrada);
+                while (!file.eof()) {
+                    file >> cuerpo;
 
-            }
-            file.close();
-            cout << salida;
-            /*D:\salida\a.txt*/
+                    salida = salida + cuerpo + " ";
+                    if (cuerpo == "") {
+                        break;
+                    }
+                }
+            
+                file.close();
+
+                string nombre = "";
+                string ruta = "";
+
+
+                string separador = "\\";
+
+                size_t pos = 0;
+                string token;
+                while ((pos = entrada.find(separador)) != string::npos) {
+                    token = entrada.substr(0, pos);
+
+                    ruta = ruta +token +"\\\\";
+
+                    entrada.erase(0, pos + separador.length());
+
+                }
+                nombre = entrada;
+
+
+                listaD* nuevo = new listaD();
+                for (int i = 0; i < salida.length() - 1; i++) {
+                    nuevo->insertarUltimo(salida[i]);
+                }
+                listaCaracteres = nuevo;
+                nodoLC* n = new nodoLC();
+                n->rutaArchivo = ruta;
+                n->nombreArchivo = nombre;
+                
+                archiRec->insertarPrimero(n);
+                
+                editor();
+                break;
+            
+           
+            /*D:\salida\b.txt*/
 
         }
         else {
@@ -528,7 +592,7 @@ void abrirRecientes() {
         int c = wgetch(win);
 
     
-        if (c == 27) {
+        if (c == 24) {
             menuPrincipal();
             break;
 
@@ -553,14 +617,53 @@ void abrirRecientes() {
 
         }
         else if (c == 13) {
+            string cuerpo;
+            string entrada;
+            string salida;
             nodoLC* t = new nodoLC();
             if (archiRec->getPrimero()->siguiente != archiRec->getPrimero()) {
                 t = archiRec->buscar(x);
-                cout << t->nombreArchivo;
+              
+                
+            }
+           
+
+
+            if (t->rutaArchivo != "") {
+                ifstream file;
+                file.open(t->rutaArchivo);
+                while (!file.eof()) {
+                    file >> cuerpo;
+                    salida = salida + cuerpo + " ";
+                    
+                }
+                file.close();
+
+
+                listaD* nuevo = new listaD();
+                for (int i = 0; i < salida.length() - 1; i++) {
+                    nuevo->insertarUltimo(salida[i]);
+                }
+                listaCaracteres = nuevo;
+
+                editor();
+                break;
+            }
+            else {
+                menuPrincipal();
+                break;
             }
             
+        
 
 
+        }
+        else if(c== 24){
+            if (archiRec->getPrimero()->siguiente != archiRec->getUltimo()) {
+                generarGrafoRecientes(graficarRecientes());
+            }
+            
+            abrirRecientes();
         }
      
     }
@@ -611,6 +714,10 @@ void guardar() {
 
             break;
 
+        }if (c == 24) {
+            editor();
+            
+            break;
         }
         else {
             entrada = entrada + (char)c;
@@ -620,11 +727,287 @@ void guardar() {
    
 }
 
+string graficarLd(){
+    string encabezado = " digraph G {";
+ 
+    encabezado = encabezado + "rankdir=LR;";
+    encabezado = encabezado + "node0 [label =\"null\"];";
+  
+
+    nodo* aux = listaCaracteres->getPrimero()->siguiente;
+  
+    int i = 1;
+    string nodos = "";
+    string dir = "";
+
+    while (aux!= listaCaracteres->getUltimo()) {
+       
+        nodos = nodos + "node" + to_string(i) + "[label = \"" + aux->letra + "\"];";
+        if (i - 1 != 0) {
+            dir = dir + "node" + to_string(i) + " -> node" + to_string(i - 1) + ";";
+        }
+        dir = dir + "node" + to_string(i) + " -> node" + to_string(i + 1) + ";";
+        i = i + 1;
+        aux = aux->siguiente;
+    }
+
+    nodos = nodos + "node" + to_string(i) + "[label = \"null\",width=0.5];";
+    string fi = "node1 ->node0;";
+    string fin = "}";
+    encabezado = encabezado + nodos + fi +dir+ fin;
+
+    return encabezado;
+}
+
+void generarGrafoLd(string e) {
+    ofstream file;
+    file.open("listaDoble.txt", ios::out);
+
+    file << e;
+    file.close();
+
+    string s1 = "dot -Tpng listaDoble.txt -o D:/grafos/listaDoble.png";
+   
+    system(s1.c_str());
+    system("start D:/grafos/listaDoble.png");
+    
+   
+
+}
+
+void graficasion() {
+    wclear(win);
+
+    aux = listaCaracteres->getPrimero();
+
+    if (aux->siguiente == listaCaracteres->getUltimo()) {
+    }
+    else {
+        int xt = 0;
+        int yt = 0;
+
+        while (aux->siguiente != listaCaracteres->getUltimo()) {
+            aux = aux->siguiente;
+            mvwprintw(win, xt, yt, "%c%", aux->letra);
+            yt = yt + 1;
+            if (yt == 113) {
+                yt = 0;
+                xt = xt + 1;
+            }
+            px = xt;
+            py = yt;
+        }
+    }
+    mvwprintw(win, 20, 15, "1) Lista       2) Palabras Reemplazadas      3) Palabras Ordenadas");
+    mvwprintw(win, 23, 15, "CTRL+w (BUSCAR Y REEMPLAZAR)        CTRL+q(REPORTES)            CTRL+s(GUARDAR)");
+    wrefresh(win);
+ 
+    wmove(win, 21, 15);
+
+    while (true) {
+        int c = wgetch(win);
+
+     
+        if (c == 49) {
+            generarGrafoLd(graficarLd());
+
+            break;
+        }
+        else if (c == 50) {
+           
+            if(cambios1->cabeza->siguiente != NULL)
+            {
+                generarGrafoPila(graficarPila());
+            }
+            if (cambios2->cabeza->siguiente != NULL)
+            {
+                generarGrafoPila2(graficarPila2());
+            }
+            
+            break;
+        }
+        else if (c == 51) {
+
+        }
+        else if (c == 24) {
+           
+            break;
+        }
+    }
+
+}
+
+string graficarPila() {
+    string encabezado = " digraph G {";
+
+    encabezado = encabezado + "rankdir=LR;";
+   
+
+
+    nodoNoRev* aux =cambios1->peek();
+
+    int i = 0;
+    string nodos = "";
+    string dir = "";
+    string rev;
+    string pos;
+    while (aux != NULL) {
+        if (aux->palabraBuscada != "" ) {
+            if (aux->revertido == true) { rev = "Revertido"; }
+            else { rev = "No Revertido"; }
+            pos = aux->posicion;
+            nodos = nodos + "node" + to_string(i) + "[label = \"" +"Palabra Buscada: "+ aux->palabraBuscada + "\n" + 
+                +"Palabra Reemplazada: "+aux->palabraReemplazada + "\n" +
+                +"Estado: " + rev+"\n" +
+                +"Palabra: " + aux->palabra + "\n" +
+                +"Posicion: " + pos + "\n" +
+
+                
+                "\"];";
+            if (i != 0) {
+                dir = dir + "node" + to_string(i-1) + " -> node" + to_string(i) + ";";
+            }
+
+            i = i + 1;
+        }
+        rev = "";
+        aux = aux->siguiente;
+    }
+
+  
+  
+    string fin = "}";
+    encabezado = encabezado + nodos  + dir + fin;
+
+    return encabezado;
+}
+
+string graficarPila2() {
+    string encabezado = " digraph G {";
+
+    encabezado = encabezado + "rankdir=LR;";
 
 
 
+    nodoNoRev* aux = cambios2->peek();
+
+    int i = 0;
+    string nodos = "";
+    string dir = "";
+    string rev;
+    string pos;
+    while (aux != NULL) {
+        if (aux->palabraBuscada != "") {
+            if (aux->revertido == true) { rev = "Revertido"; }
+            else { rev = "No Revertido"; }
+            pos = aux->posicion;
+            nodos = nodos + "node" + to_string(i) + "[label = \"" + "Palabra Buscada: " + aux->palabraBuscada + "\n" +
+                +"Palabra Reemplazada: " + aux->palabraReemplazada + "\n" +
+                +"Estado: " + rev + "\n" +
+                +"Palabra: " + aux->palabra + "\n" +
+                +"Posicion: " + pos + "\n" +
+
+
+                "\"];";
+            if (i != 0) {
+                dir = dir + "node" + to_string(i - 1) + " -> node" + to_string(i) + ";";
+            }
+
+            i = i + 1;
+        }
+        rev = "";
+        aux = aux->siguiente;
+    }
 
 
 
+    string fin = "}";
+    encabezado = encabezado + nodos + dir + fin;
+
+    return encabezado;
+}
+
+void generarGrafoPila(string e) {
+    ofstream file;
+    file.open("pila.txt", ios::out);
+
+    file << e;
+    file.close();
+
+    string s1 = "dot -Tpng pila.txt -o D:/grafos/pila.png";
+
+    system(s1.c_str());
+    system("start D:/grafos/pila.png");
+
+}
+
+void generarGrafoPila2(string e) {
+    ofstream file;
+    file.open("pila2.txt", ios::out);
+
+    file << e;
+    file.close();
+
+    string s1 = "dot -Tpng pila2.txt -o D:/grafos/pila2.png";
+
+    system(s1.c_str());
+    system("start D:/grafos/pila2.png");
+
+}
+
+string graficarRecientes() {
+    string encabezado = " digraph G {";
+
+    encabezado = encabezado + "rankdir=LR;";
+
+
+
+    nodoLC* aux = archiRec->getPrimero()->siguiente;
+
+    int i = 0;
+    string nodos = "";
+    string dir = "";
+
+    while (aux != archiRec->getUltimo()) {
+    
+       
+            nodos = nodos + "node" + to_string(i) + "[label = \""  + aux->nombreArchivo + "\n" +
+                +"" + aux->rutaArchivo + "\n" +
+                
+
+                "\"];";
+            if (i != 0) {
+                dir = dir + "node" + to_string(i - 1) + " -> node" + to_string(i) + ";";
+            }
+
+            i = i + 1;
+        
+            aux = aux->siguiente;
+       
+    }
+    if (i != 1) {
+        dir = dir + "node" + to_string(i-1) + " -> node0" + ";";
+    }
+
+    string fin = "}";
+    encabezado = encabezado + nodos + dir + fin;
+
+    return encabezado;
+}
+
+void generarGrafoRecientes(string e) {
+    ofstream file;
+    file.open("archioRec.txt", ios::out);
+
+    file << e;
+    file.close();
+
+    string s1 = "dot -Tpng archioRec.txt -o D:/grafos/archioRec.png";
+
+    system(s1.c_str());
+    system("start D:/grafos/archioRec.png");
+
+
+}
 
 

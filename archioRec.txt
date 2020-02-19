@@ -1,0 +1,13 @@
+ digraph G {rankdir=LR;node0[label = "a.txt
+D:\\salida\\
+"];node1[label = "a.txt
+D:\\salida\\
+"];node2[label = "a.txt
+D:\\salida\\
+"];node3[label = "a.txt
+D:\\salida\\
+"];node4[label = "b.txt
+D:\\salida\\
+"];node5[label = "a.txt
+D:\\salida\\
+"];node0 -> node1;node1 -> node2;node2 -> node3;node3 -> node4;node4 -> node5;node5 -> node0;}

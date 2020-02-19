@@ -1,3 +1,5 @@
 ﻿  practica1.cpp
-D:\Repositorios\EDD_1S2020_P1_201800523\practica1.cpp(49,15): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+D:\Repositorios\EDD_1S2020_P1_201800523\practica1.cpp(58,15): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+D:\Repositorios\EDD_1S2020_P1_201800523\practica1.cpp(529,35): warning C4018: '<': no coinciden signed/unsigned
+D:\Repositorios\EDD_1S2020_P1_201800523\practica1.cpp(644,35): warning C4018: '<': no coinciden signed/unsigned
   practica1.vcxproj -> D:\Repositorios\EDD_1S2020_P1_201800523\Debug\practica1.exe

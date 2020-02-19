@@ -31,6 +31,7 @@ nodoLC* listaCircular::buscar(int id) {
 			
 			break;
 		}
+		
 	}
 	return aux;
 }

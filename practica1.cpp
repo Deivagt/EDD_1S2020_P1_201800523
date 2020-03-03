@@ -591,7 +591,7 @@ void abrirRecientes() {
 
         int c = wgetch(win);
 
-    
+      
         if (c == 24) {
             menuPrincipal();
             break;
@@ -616,7 +616,7 @@ void abrirRecientes() {
            repitoxd(x, y);
 
         }
-        else if (c == 13) {
+        else if (c == 120) {
             string cuerpo;
             string entrada;
             string salida;
